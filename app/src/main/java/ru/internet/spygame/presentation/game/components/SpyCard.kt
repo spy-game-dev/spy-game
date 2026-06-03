@@ -4,14 +4,12 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,13 +18,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
@@ -67,6 +65,11 @@ fun SpyCard(
     val swipeThresholdPx = with(density) { 80.dp.toPx() }
     val coroutineScope = rememberCoroutineScope()
 
+    // rememberUpdatedState гарантирует, что pointerInput-корутины всегда вызывают
+    // актуальную лямбду, даже если та сменилась между рекомпозициями, не перезапуская корутину.
+    val currentOnTap       by rememberUpdatedState(onTap)
+    val currentOnDismissed by rememberUpdatedState(onDismissed)
+
     // ─── Scale: 1.0 → 1.05 при reveal (animateFloatAsState по спецификации) ──
     val scale by animateFloatAsState(
         targetValue = if (cardUiState == CardUiState.REVEALED) 1.05f else 1.0f,
@@ -75,17 +78,6 @@ fun SpyCard(
             stiffness    = Spring.StiffnessMedium
         ),
         label = "CardScale"
-    )
-
-    // ─── Elevation: 2dp → 16dp при reveal (animateDpAsState по спецификации) ─
-    val shadowElevation by animateDpAsState(
-        targetValue = when (cardUiState) {
-            CardUiState.STACKED   -> 2.dp
-            CardUiState.REVEALED  -> 16.dp
-            CardUiState.DISMISSED -> 0.dp
-        },
-        animationSpec = tween(durationMillis = 300),
-        label = "CardElevation"
     )
 
     // ─── 3D-флип (Animatable — нужны последовательные фазы) ──────────────────
@@ -166,8 +158,6 @@ fun SpyCard(
 
     // ─── Итоговый Modifier ────────────────────────────────────────────────────
     val animatedModifier = modifier
-        // Shadow следует за animated elevation
-        .shadow(elevation = shadowElevation, shape = RoundedCornerShape(16.dp))
         // Все трансформы в одном graphicsLayer — один RenderNode, без лишних перерисовок
         .graphicsLayer {
             rotationY      = flipRotation.value
@@ -177,12 +167,10 @@ fun SpyCard(
             translationX   = dismissOffsetX.value + swipeOffsetX
             alpha          = dismissAlpha.value
         }
-        // Тап
         .pointerInput(isInteractive, cardUiState) {
             if (!isInteractive) return@pointerInput
-            detectTapGestures(onTap = { onTap() })
+            detectTapGestures(onTap = { currentOnTap() })
         }
-        // Горизонтальный свайп — только у REVEALED-карточки
         .pointerInput(cardUiState) {
             if (cardUiState != CardUiState.REVEALED) return@pointerInput
             detectHorizontalDragGestures(
@@ -199,7 +187,7 @@ fun SpyCard(
                     if (abs(swipeOffsetX) > swipeThresholdPx) {
                         // Порог пройден → dismiss в направлении свайпа
                         dismissDirection = if (swipeOffsetX > 0) 1 else -1
-                        onDismissed()
+                        currentOnDismissed()
                     } else {
                         // Не добрал до порога → возврат в центр
                         coroutineScope.launch {
@@ -237,7 +225,7 @@ fun SpyCard(
 @Preview(showBackground = true, name = "SpyCard — STACKED (верхняя)")
 @Composable
 private fun SpyCardStackedPreview() {
-    SpyGameTheme {
+    SpyGameTheme(darkTheme = true) {
         SpyCard(
             card          = GameCard(1, false, "Пилот", "Аэропорт"),
             cardUiState   = CardUiState.STACKED,
@@ -253,7 +241,7 @@ private fun SpyCardStackedPreview() {
 @Preview(showBackground = true, name = "SpyCard — REVEALED (шпион)")
 @Composable
 private fun SpyCardSpyRevealedPreview() {
-    SpyGameTheme {
+    SpyGameTheme(darkTheme = true) {
         SpyCard(
             card          = GameCard(3, true, GameCard.SPY_WORD_PLACEHOLDER, "Аэропорт"),
             cardUiState   = CardUiState.REVEALED,

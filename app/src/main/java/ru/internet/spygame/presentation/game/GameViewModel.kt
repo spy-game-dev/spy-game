@@ -177,6 +177,10 @@ class GameViewModel @Inject constructor(
     // ─────────────────────────────────────────────────────────────────────────
 
     private fun revealCard(position: Int) {
+        // В один момент может быть открыта только одна карточка.
+        // Без этой проверки повторный тап во время flip-анимации (~550 мс) переведёт вторую
+        // карточку в REVEALED и отменит таймер первой — она зависнет без авто-закрытия.
+        if (_uiState.value.revealedPosition != null) return
         setCardState(position, CardUiState.REVEALED)
         startTimer(position)
     }

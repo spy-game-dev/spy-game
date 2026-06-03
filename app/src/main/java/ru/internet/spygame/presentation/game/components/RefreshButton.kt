@@ -1,6 +1,10 @@
 package ru.internet.spygame.presentation.game.components
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -24,7 +28,7 @@ import ru.internet.spygame.presentation.theme.SpyGameTheme
  * Кнопка «Новая игра» — запускает сессию с другой категорией.
  *
  * @param onClick   Вызывает GameViewModel.refreshGame().
- * @param isLoading Пока true — кнопка заблокирована, иконка вращается.
+ * @param isLoading Пока true — кнопка заблокирована, иконка непрерывно вращается.
  * @param expanded  true → [ExtendedFloatingActionButton] с текстом,
  *                  false → компактный [FloatingActionButton].
  */
@@ -35,11 +39,21 @@ fun RefreshButton(
     modifier: Modifier = Modifier,
     expanded: Boolean = true
 ) {
-    val iconRotation by animateFloatAsState(
-        targetValue   = if (isLoading) 360f else 0f,
-        animationSpec = if (isLoading) tween(800) else tween(300),
-        label         = "RefreshIconRotation"
+    // infiniteRepeatable даёт непрерывное вращение на всё время isLoading=true.
+    // animateFloat внутри rememberInfiniteTransition не создаёт лишних рекомпозиций
+    // за пределами этого composable.
+    val infiniteTransition = rememberInfiniteTransition(label = "RefreshIconRotation")
+    val spinRotation by infiniteTransition.animateFloat(
+        initialValue  = 0f,
+        targetValue   = 360f,
+        animationSpec = infiniteRepeatable(
+            animation  = tween(durationMillis = 800, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "RefreshIconRotationValue"
     )
+
+    val iconRotation = if (isLoading) spinRotation else 0f
 
     val iconModifier = Modifier
         .size(24.dp)

@@ -2,7 +2,6 @@ package ru.internet.spygame.presentation.game.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
@@ -35,7 +34,9 @@ private const val STACK_SCALE_STEP = 0.03f
  *   на тап для reveal.
  * - REVEALED-карточка рендерится поверх стопки, SpyCard сам управляет её
  *   анимацией (scale ×1.05, elevation 16dp, флип).
- * - DISMISSED-карточки не рендерятся.
+ * - DISMISSED-карточки остаются в дереве композиции, пока SpyCard не
+ *   завершит анимацию выхода (slide + fade, 300 мс). После этого у них
+ *   alpha = 0 и нет обработчиков ввода.
  *
  * @param session           Активная игровая сессия.
  * @param cardStates        Список состояний карточек (позиция = индекс в session.cards).
@@ -76,25 +77,30 @@ fun CardStack(
             session.cards.indices.reversed().forEach { position ->
                 val state = cardStates.getOrElse(position) { CardUiState.DISMISSED }
 
-                // Не рендерим отброшенные карточки — SpyCard сам управляет анимацией исчезновения
-                if (state == CardUiState.DISMISSED) return@forEach
+                // DISMISSED-карточки намеренно остаются в дереве композиции: только так
+                // LaunchedEffect(DISMISSED) внутри SpyCard может отыграть анимацию выхода
+                // (slide + fade, 300 мс). После завершения анимации alpha = 0, pointer input
+                // отключён — карточка невидима и не перехватывает события ввода.
 
                 // Глубина относительно верхней карточки стопки:
-                //   0 = верхняя (или REVEALED), 1 = сразу под ней, и т.д.
+                //   0 = верхняя (или REVEALED/DISMISSED), 1 = сразу под ней, и т.д.
                 val depthBelow = when {
-                    state == CardUiState.REVEALED -> 0  // REVEALED всегда «на поверхности»
-                    topStackedPosition == null    -> 0
-                    else                          -> position - topStackedPosition
+                    state == CardUiState.REVEALED  -> 0  // REVEALED всегда «на поверхности»
+                    state == CardUiState.DISMISSED -> 0  // Нейтральная позиция для анимации выхода
+                    topStackedPosition == null     -> 0
+                    else                           -> position - topStackedPosition
                 }
 
-                // Прячем карточки глубже MAX_STACK_VISIBLE + 1 — незачем рисовать то, что не видно
+                // Прячем карточки глубже MAX_STACK_VISIBLE + 1 — незачем рисовать то, что не видно.
+                // DISMISSED всегда рендерится: нужно проиграть анимацию выхода.
                 if (state == CardUiState.STACKED && depthBelow > MAX_STACK_VISIBLE) return@forEach
 
-                // Z-order: верхняя карточка (depth=0) — выше всех; REVEALED — поверх всего
+                // Z-order: REVEALED — поверх всего; DISMISSED — поверх стопки (анимация выхода
+                // должна быть видна), но ниже новой REVEALED-карточки.
                 val zIndex = when (state) {
                     CardUiState.REVEALED  -> session.totalPlayers.toFloat() + 1f
+                    CardUiState.DISMISSED -> session.totalPlayers.toFloat() + 0.5f
                     CardUiState.STACKED   -> (session.totalPlayers - depthBelow).toFloat()
-                    CardUiState.DISMISSED -> 0f
                 }
 
                 SpyCard(

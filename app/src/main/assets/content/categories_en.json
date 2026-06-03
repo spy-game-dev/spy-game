@@ -3,104 +3,324 @@
   "version": 1,
   "categories": [
     {
-      "id": "animals_en",
-      "name": "Animals",
-      "words": ["Cat", "Dog", "Wolf", "Bear", "Fox", "Rabbit", "Lion", "Tiger", "Elephant", "Penguin"]
+      "id": "wild_animals_en",
+      "name": "Wild Animals",
+      "words": [
+        "Lion",
+        "Elephant",
+        "Giraffe",
+        "Tiger",
+        "Zebra",
+        "Gorilla",
+        "Crocodile",
+        "Rhinoceros",
+        "Kangaroo",
+        "Camel"
+      ]
+    },
+    {
+      "id": "sea_creatures_en",
+      "name": "Sea Creatures",
+      "words": [
+        "Shark",
+        "Octopus",
+        "Dolphin",
+        "Crab",
+        "Starfish",
+        "Whale",
+        "Jellyfish",
+        "Swordfish",
+        "Seahorse",
+        "Lobster"
+      ]
     },
     {
       "id": "fruits_en",
       "name": "Fruits",
-      "words": ["Apple", "Pear", "Banana", "Orange", "Lemon", "Cherry", "Grape", "Peach", "Watermelon", "Plum"]
+      "words": [
+        "Watermelon",
+        "Pineapple",
+        "Banana",
+        "Cherry",
+        "Strawberry",
+        "Grapes",
+        "Pear",
+        "Lemon",
+        "Coconut",
+        "Mango"
+      ]
     },
     {
       "id": "vegetables_en",
       "name": "Vegetables",
-      "words": ["Carrot", "Potato", "Cucumber", "Tomato", "Onion", "Cabbage", "Pepper", "Eggplant", "Zucchini", "Beet"]
+      "words": [
+        "Carrot",
+        "Pumpkin",
+        "Broccoli",
+        "Corn",
+        "Onion",
+        "Bell Pepper",
+        "Eggplant",
+        "Tomato",
+        "Cucumber",
+        "Potato"
+      ]
     },
     {
-      "id": "vehicles_en",
+      "id": "transport_en",
       "name": "Transport",
-      "words": ["Car", "Bus", "Train", "Bicycle", "Airplane", "Ship", "Motorcycle", "Tram", "Truck", "Taxi"]
+      "words": [
+        "Bicycle",
+        "Scooter",
+        "Helicopter",
+        "Submarine",
+        "Tractor",
+        "Sailboat",
+        "Train",
+        "Tank",
+        "Hot Air Balloon",
+        "Airplane"
+      ]
     },
     {
-      "id": "home_en",
-      "name": "Home",
-      "words": ["Table", "Chair", "Bed", "Sofa", "Lamp", "Door", "Window", "Wardrobe", "Carpet", "Mirror"]
-    },
-    {
-      "id": "kitchen_en",
-      "name": "Kitchen",
-      "words": ["Spoon", "Fork", "Knife", "Plate", "Cup", "Pot", "Pan", "Kettle", "Bowl", "Bread"]
-    },
-    {
-      "id": "clothes_en",
-      "name": "Clothes",
-      "words": ["T-shirt", "Shirt", "Pants", "Skirt", "Dress", "Jacket", "Hat", "Shoe", "Sock", "Glove"]
-    },
-    {
-      "id": "nature_en",
-      "name": "Nature",
-      "words": ["Birch", "Oak", "Rose", "Pine", "Mountain", "River", "Lake", "Grass", "Cloud", "Sun"]
-    },
-    {
-      "id": "weather_en",
-      "name": "Weather",
-      "words": ["Rain", "Snow", "Wind", "Fog", "Storm", "Rainbow", "Sunshine", "Ice", "Cloud", "Hail"]
-    },
-    {
-      "id": "sea_en",
-      "name": "Sea",
-      "words": ["Fish", "Crab", "Dolphin", "Shark", "Coral", "Wave", "Sand", "Beach", "Anchor", "Sail"]
-    },
-    {
-      "id": "forest_en",
-      "name": "Forest",
-      "words": ["Fir", "Stump", "Mushroom", "Berry", "Cone", "Squirrel", "Wild boar", "Moss", "Bush", "Deer"]
-    },
-    {
-      "id": "tools_en",
-      "name": "Tools",
-      "words": ["Hammer", "Screwdriver", "Saw", "Nail", "Wrench", "Axe", "Scissors", "Ruler", "Drill", "Brush"]
+      "id": "musical_instruments_en",
+      "name": "Musical Instruments",
+      "words": [
+        "Guitar",
+        "Drum",
+        "Violin",
+        "Trumpet",
+        "Piano",
+        "Saxophone",
+        "Harp",
+        "Flute",
+        "Banjo",
+        "Ukulele"
+      ]
     },
     {
       "id": "sports_en",
       "name": "Sports",
-      "words": ["Football", "Basketball", "Tennis", "Hockey", "Swimming", "Skiing", "Boxing", "Bicycle", "Volleyball", "Running"]
+      "words": [
+        "Soccer",
+        "Tennis",
+        "Boxing",
+        "Surfing",
+        "Hockey",
+        "Basketball",
+        "Archery",
+        "Skateboarding",
+        "Golf",
+        "Bowling"
+      ]
     },
     {
-      "id": "music_en",
-      "name": "Music",
-      "words": ["Guitar", "Piano", "Drum", "Violin", "Flute", "Microphone", "Note", "Saxophone", "Harp", "Trumpet"]
+      "id": "pets_en",
+      "name": "Pets",
+      "words": [
+        "Cat",
+        "Dog",
+        "Parrot",
+        "Hamster",
+        "Rabbit",
+        "Turtle",
+        "Goldfish",
+        "Guinea Pig",
+        "Hedgehog",
+        "Snake"
+      ]
+    },
+    {
+      "id": "food_en",
+      "name": "Food",
+      "words": [
+        "Pizza",
+        "Sushi",
+        "Burger",
+        "Ice Cream",
+        "Cake",
+        "Hot Dog",
+        "Pancakes",
+        "Donut",
+        "Noodles",
+        "Sandwich"
+      ]
+    },
+    {
+      "id": "insects_en",
+      "name": "Insects",
+      "words": [
+        "Butterfly",
+        "Bee",
+        "Spider",
+        "Ant",
+        "Dragonfly",
+        "Beetle",
+        "Grasshopper",
+        "Caterpillar",
+        "Firefly",
+        "Scorpion"
+      ]
     },
     {
       "id": "space_en",
       "name": "Space",
-      "words": ["Planet", "Star", "Moon", "Sun", "Rocket", "Satellite", "Comet", "Astronaut", "Telescope", "Meteor"]
+      "words": [
+        "Rocket",
+        "Planet",
+        "Comet",
+        "Star",
+        "UFO",
+        "Moon",
+        "Satellite",
+        "Telescope",
+        "Asteroid",
+        "Black Hole"
+      ]
     },
     {
-      "id": "school_en",
-      "name": "School",
-      "words": ["Book", "Notebook", "Pen", "Pencil", "Desk", "Board", "Backpack", "Eraser", "Globe", "Bell"]
+      "id": "weather_en",
+      "name": "Weather",
+      "words": [
+        "Rainbow",
+        "Lightning",
+        "Snowman",
+        "Tornado",
+        "Cloud",
+        "Sun",
+        "Snowflake",
+        "Rain",
+        "Storm Cloud",
+        "Weathervane"
+      ]
     },
     {
-      "id": "city_en",
-      "name": "City",
-      "words": ["House", "Bridge", "Street", "Park", "Tower", "Lamp", "Square", "Bus", "Subway", "Monument"]
+      "id": "clothing_en",
+      "name": "Clothing & Accessories",
+      "words": [
+        "Hat",
+        "Mittens",
+        "Sneakers",
+        "Tie",
+        "Scarf",
+        "Sunglasses",
+        "Umbrella",
+        "Backpack",
+        "Socks",
+        "Crown"
+      ]
     },
     {
-      "id": "garden_en",
-      "name": "Garden",
-      "words": ["Flower", "Tree", "Apple", "Pear", "Leaf", "Watering can", "Bush", "Grass", "Bee", "Fence"]
+      "id": "birds_en",
+      "name": "Birds",
+      "words": [
+        "Eagle",
+        "Flamingo",
+        "Pelican",
+        "Owl",
+        "Peacock",
+        "Penguin",
+        "Ostrich",
+        "Toucan",
+        "Hummingbird",
+        "Parrot"
+      ]
     },
     {
-      "id": "toys_en",
-      "name": "Toys",
-      "words": ["Ball", "Blocks", "Doll", "Toy car", "Puzzle", "Spinning top", "Teddy bear", "Lego", "Kite", "Balloon"]
+      "id": "tools_en",
+      "name": "Tools",
+      "words": [
+        "Hammer",
+        "Wrench",
+        "Saw",
+        "Drill",
+        "Shovel",
+        "Screwdriver",
+        "Axe",
+        "Rake",
+        "Pliers",
+        "Wheelbarrow"
+      ]
     },
     {
-      "id": "shapes_en",
-      "name": "Shapes",
-      "words": ["Circle", "Square", "Triangle", "Rectangle", "Oval", "Star", "Heart", "Diamond", "Spiral", "Semicircle"]
+      "id": "furniture_en",
+      "name": "Home & Furniture",
+      "words": [
+        "Sofa",
+        "Lamp",
+        "Wardrobe",
+        "Bathtub",
+        "Fireplace",
+        "Hammock",
+        "Armchair",
+        "Chandelier",
+        "Bookshelf",
+        "Refrigerator"
+      ]
+    },
+    {
+      "id": "plants_en",
+      "name": "Flowers & Plants",
+      "words": [
+        "Rose",
+        "Sunflower",
+        "Tulip",
+        "Dandelion",
+        "Daisy",
+        "Lotus",
+        "Orchid",
+        "Cactus",
+        "Bamboo",
+        "Fern"
+      ]
+    },
+    {
+      "id": "buildings_en",
+      "name": "Buildings & Structures",
+      "words": [
+        "Lighthouse",
+        "Castle",
+        "Pyramid",
+        "Windmill",
+        "Tower",
+        "Church",
+        "Bridge",
+        "Igloo",
+        "Skyscraper",
+        "Tent"
+      ]
+    },
+    {
+      "id": "holiday_en",
+      "name": "Holiday",
+      "words": [
+        "Christmas Tree",
+        "Fireworks",
+        "Birthday Cake",
+        "Balloon",
+        "Pumpkin",
+        "Mask",
+        "Gift Box",
+        "Wreath",
+        "Party Popper",
+        "Candy Cane"
+      ]
+    },
+    {
+      "id": "stationery_en",
+      "name": "Stationery",
+      "words": [
+        "Pencil",
+        "Eraser",
+        "Scissors",
+        "Ruler",
+        "Paperclip",
+        "Thumbtack",
+        "Tape",
+        "Pencil Sharpener",
+        "Marker",
+        "Compass"
+      ]
     }
   ]
 }
