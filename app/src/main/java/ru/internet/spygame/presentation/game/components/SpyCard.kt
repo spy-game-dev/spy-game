@@ -4,12 +4,14 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -78,6 +80,19 @@ fun SpyCard(
             stiffness    = Spring.StiffnessMedium
         ),
         label = "CardScale"
+    )
+
+    // ─── Elevation: 2dp → 16dp при reveal (animateDpAsState по спецификации) ─
+    // Переименовано из shadowElevation → cardElevationDp, чтобы избежать конфликта
+    // имён с одноимённым полем GraphicsLayerScope (используется ниже в graphicsLayer).
+    val cardElevationDp by animateDpAsState(
+        targetValue = when (cardUiState) {
+            CardUiState.STACKED   -> 2.dp
+            CardUiState.REVEALED  -> 16.dp
+            CardUiState.DISMISSED -> 0.dp
+        },
+        animationSpec = tween(durationMillis = 300),
+        label = "CardElevation"
     )
 
     // ─── 3D-флип (Animatable — нужны последовательные фазы) ──────────────────
@@ -152,20 +167,26 @@ fun SpyCard(
         }
     }
 
-    // Верхняя карточка реагирует на тап (reveal).
-    // REVEALED-карточка — всегда интерактивна (dismiss по тапу).
     val isInteractive = isTopCard || cardUiState == CardUiState.REVEALED
 
-    // ─── Итоговый Modifier ────────────────────────────────────────────────────
+
     val animatedModifier = modifier
-        // Все трансформы в одном graphicsLayer — один RenderNode, без лишних перерисовок
         .graphicsLayer {
             rotationY      = flipRotation.value
             cameraDistance = 12f * density.density          // Предотвращает перспективное искажение
             scaleX         = scale
             scaleY         = scale
             translationX   = dismissOffsetX.value + swipeOffsetX
-            alpha          = dismissAlpha.value
+
+            shadowElevation = with(density) { cardElevationDp.toPx() }
+            shape           = RoundedCornerShape(16.dp)
+            clip            = true
+
+            val absRot   = abs(flipRotation.value)
+            val edgeFade = if (absRot < 80f) 1f
+                           else ((90f - absRot) / 10f).coerceAtLeast(0f)
+
+            alpha = dismissAlpha.value * edgeFade
         }
         .pointerInput(isInteractive, cardUiState) {
             if (!isInteractive) return@pointerInput
@@ -216,40 +237,6 @@ fun SpyCard(
             categoryName = card.categoryName,
             cardNumber   = card.index,
             modifier     = animatedModifier
-        )
-    }
-}
-
-// ─── Previews ─────────────────────────────────────────────────────────────────
-
-@Preview(showBackground = true, name = "SpyCard — STACKED (верхняя)")
-@Composable
-private fun SpyCardStackedPreview() {
-    SpyGameTheme(darkTheme = true) {
-        SpyCard(
-            card          = GameCard(1, false, "Пилот", "Аэропорт"),
-            cardUiState   = CardUiState.STACKED,
-            isTopCard     = true,
-            timerProgress = 1f,
-            onTap         = {},
-            onDismissed   = {},
-            modifier      = Modifier.size(220.dp, 308.dp)
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "SpyCard — REVEALED (шпион)")
-@Composable
-private fun SpyCardSpyRevealedPreview() {
-    SpyGameTheme(darkTheme = true) {
-        SpyCard(
-            card          = GameCard(3, true, GameCard.SPY_WORD_PLACEHOLDER, "Аэропорт"),
-            cardUiState   = CardUiState.REVEALED,
-            isTopCard     = false,
-            timerProgress = 0.4f,
-            onTap         = {},
-            onDismissed   = {},
-            modifier      = Modifier.size(220.dp, 308.dp)
         )
     }
 }

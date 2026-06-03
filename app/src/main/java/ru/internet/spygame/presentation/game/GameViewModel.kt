@@ -89,7 +89,6 @@ class GameViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             runCatching {
-                // "system" разрешается в "ru"/"en" на уровне presentation
                 val languageCode = AppLanguage
                     .fromCode(settings.language)
                     .resolveLanguageCode()
@@ -166,7 +165,7 @@ class GameViewModel @Inject constructor(
      * Исключает текущую категорию, чтобы гарантировать смену локации.
      */
     fun refreshGame() {
-        if (_uiState.value.isLoading) return // Игнорируем повторный запрос пока грузимся
+        if (_uiState.value.isLoading) return
         val settings = lastSettings ?: return
         val currentCategoryId = _uiState.value.session?.category?.id
         loadSession(settings, excludeCategoryId = currentCategoryId)
@@ -177,8 +176,6 @@ class GameViewModel @Inject constructor(
     // ─────────────────────────────────────────────────────────────────────────
 
     private fun revealCard(position: Int) {
-        // В один момент может быть открыта только одна карточка.
-        // Без этой проверки повторный тап во время flip-анимации (~550 мс) переведёт вторую
         // карточку в REVEALED и отменит таймер первой — она зависнет без авто-закрытия.
         if (_uiState.value.revealedPosition != null) return
         setCardState(position, CardUiState.REVEALED)

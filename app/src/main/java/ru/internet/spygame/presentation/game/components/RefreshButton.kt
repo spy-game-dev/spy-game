@@ -39,9 +39,6 @@ fun RefreshButton(
     modifier: Modifier = Modifier,
     expanded: Boolean = true
 ) {
-    // infiniteRepeatable даёт непрерывное вращение на всё время isLoading=true.
-    // animateFloat внутри rememberInfiniteTransition не создаёт лишних рекомпозиций
-    // за пределами этого composable.
     val infiniteTransition = rememberInfiniteTransition(label = "RefreshIconRotation")
     val spinRotation by infiniteTransition.animateFloat(
         initialValue  = 0f,

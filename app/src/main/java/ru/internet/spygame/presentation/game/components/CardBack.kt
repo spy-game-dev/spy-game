@@ -18,6 +18,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ru.internet.spygame.R
 import ru.internet.spygame.domain.model.GameCard
 import ru.internet.spygame.presentation.theme.SpyGameTheme
@@ -92,15 +97,28 @@ fun CardBack(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
+                val baseStyle = if (isSpy)
+                    MaterialTheme.typography.displaySmall
+                else
+                    MaterialTheme.typography.headlineLarge
+
+                // Коэффициент масштабирования шрифта: сбрасывается при смене слова
+                var fontScale by remember(displayWord) { mutableFloatStateOf(1f) }
+
                 Text(
                     text       = displayWord,
-                    style      = if (isSpy)
-                        MaterialTheme.typography.displaySmall
-                    else
-                        MaterialTheme.typography.headlineLarge,
+                    style      = baseStyle.copy(
+                        fontSize = (baseStyle.fontSize.value * fontScale).sp
+                    ),
                     fontWeight = FontWeight.Bold,
                     color      = onContainerColor,
-                    textAlign  = TextAlign.Center
+                    textAlign  = TextAlign.Center,
+                    maxLines   = 2,
+                    onTextLayout = { result ->
+                        if (result.hasVisualOverflow && fontScale > 0.4f) {
+                            fontScale *= 0.9f
+                        }
+                    }
                 )
 
                 if (!isSpy) {

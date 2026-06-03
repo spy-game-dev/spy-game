@@ -38,12 +38,12 @@ private const val STACK_SCALE_STEP = 0.03f
  *   завершит анимацию выхода (slide + fade, 300 мс). После этого у них
  *   alpha = 0 и нет обработчиков ввода.
  *
- * @param session           Активная игровая сессия.
- * @param cardStates        Список состояний карточек (позиция = индекс в session.cards).
+ * @param session            Активная игровая сессия.
+ * @param cardStates         Список состояний карточек (позиция = индекс в session.cards).
  * @param topStackedPosition Индекс верхней карточки стопки (из GameUiState).
- * @param timerProgress     Прогресс таймера для REVEALED-карточки.
- * @param onCardTap         Тап по карточке → GameViewModel.onCardTap(position).
- * @param onCardSwiped      Свайп за порог → GameViewModel.onCardSwiped(position).
+ * @param timerProgress      Прогресс таймера для REVEALED-карточки.
+ * @param onCardTap          Тап по карточке → GameViewModel.onCardTap(position).
+ * @param onCardSwiped       Свайп за порог → GameViewModel.onCardSwiped(position).
  */
 @Composable
 fun CardStack(
@@ -66,37 +66,32 @@ fun CardStack(
         // Высота контейнера стопки = высота карты + смещения видимых слоёв
         val stackHeight = cardHeight + (MAX_STACK_VISIBLE * STACK_Y_OFFSET)
 
+
+        val revealedPosition: Int? = cardStates
+            .indexOfFirst { it == CardUiState.REVEALED }
+            .takeIf { it >= 0 }
+
+        val depthReferencePosition: Int? = revealedPosition ?: topStackedPosition
+
         Box(
             modifier = Modifier
                 .width(cardWidth)
                 .height(stackHeight),
             contentAlignment = Alignment.TopCenter
         ) {
-            // Рендерим карточки снизу стопки вверх:
-            // последняя позиция (bottom of stack) рисуется первой → под остальными
             session.cards.indices.reversed().forEach { position ->
                 val state = cardStates.getOrElse(position) { CardUiState.DISMISSED }
 
-                // DISMISSED-карточки намеренно остаются в дереве композиции: только так
-                // LaunchedEffect(DISMISSED) внутри SpyCard может отыграть анимацию выхода
-                // (slide + fade, 300 мс). После завершения анимации alpha = 0, pointer input
-                // отключён — карточка невидима и не перехватывает события ввода.
 
-                // Глубина относительно верхней карточки стопки:
-                //   0 = верхняя (или REVEALED/DISMISSED), 1 = сразу под ней, и т.д.
-                val depthBelow = when {
-                    state == CardUiState.REVEALED  -> 0  // REVEALED всегда «на поверхности»
-                    state == CardUiState.DISMISSED -> 0  // Нейтральная позиция для анимации выхода
-                    topStackedPosition == null     -> 0
-                    else                           -> position - topStackedPosition
+                val depthBelow: Int = when {
+                    state == CardUiState.REVEALED  -> 0
+                    state == CardUiState.DISMISSED -> 0
+                    depthReferencePosition == null -> 0
+                    else                           -> position - depthReferencePosition
                 }
 
-                // Прячем карточки глубже MAX_STACK_VISIBLE + 1 — незачем рисовать то, что не видно.
-                // DISMISSED всегда рендерится: нужно проиграть анимацию выхода.
                 if (state == CardUiState.STACKED && depthBelow > MAX_STACK_VISIBLE) return@forEach
 
-                // Z-order: REVEALED — поверх всего; DISMISSED — поверх стопки (анимация выхода
-                // должна быть видна), но ниже новой REVEALED-карточки.
                 val zIndex = when (state) {
                     CardUiState.REVEALED  -> session.totalPlayers.toFloat() + 1f
                     CardUiState.DISMISSED -> session.totalPlayers.toFloat() + 0.5f
