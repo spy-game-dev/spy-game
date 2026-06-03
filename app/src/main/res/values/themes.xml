@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Основная тема Activity.
+        NoActionBar — AppBar рисуется в Compose через TopAppBar.
+        Compose + enableEdgeToEdge() управляет статус-баром и навбаром.
+    -->
+    <style name="Theme.SpyGame" parent="Theme.Material3.DayNight.NoActionBar" />
+
+    <!--
+        Тема Splash Screen (AndroidX Core Splashscreen API).
+
+        Используется как android:theme в AndroidManifest.xml у MainActivity.
+        MainActivity вызывает installSplashScreen() → система читает эту тему
+        и показывает нативный Splash Screen до первого кадра Compose.
+
+        windowSplashScreenBackground   — цвет фона заставки
+        windowSplashScreenAnimatedIcon — иконка по центру (ic_splash)
+        windowSplashScreenIconBackgroundColor — цвет подложки иконки (необязательно)
+        postSplashScreenTheme          — тема, применяемая после Splash Screen
+    -->
+    <style name="Theme.SpyGame.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.SpyGame</item>
+    </style>
+
+</resources>

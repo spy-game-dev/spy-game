@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Цвет фона Splash Screen.
+        Должен совпадать с темнотой экрана запуска,
+        чтобы не было «моргания» при переходе к Activity.
+        Используется в Theme.SpyGame.Splash → windowSplashScreenBackground.
+    -->
+    <color name="splash_background">#1B1B1F</color>
+
+    <!--
+        Иконка на Splash Screen отображается поверх splash_background.
+        Значение совпадает с md_theme_dark_primary из Color.kt.
+    -->
+    <color name="splash_icon_tint">#BAC3FF</color>
+</resources>

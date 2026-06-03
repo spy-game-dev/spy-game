@@ -1,0 +1,148 @@
+[versions]
+# --- Build tools ---
+agp = "8.13.2"
+kotlin = "2.2.20"
+kotlinKsp = "2.2.20-2.0.3"
+
+# --- Мета-информация приложения (требование спецификации) ---
+versionCode = "1"
+versionName = "1.0.0"
+
+# --- AndroidX Core ---
+coreKtx = "1.17.0"
+activityCompose = "1.11.0"
+activityKtx = "1.11.0"
+appcompat = "1.7.1"
+
+# --- Jetpack Compose ---
+composeBom = "2025.09.00"
+uiText = "1.9.1"
+
+# --- Navigation ---
+navigationCompose = "2.9.4"
+
+# --- Lifecycle / ViewModel ---
+lifecycleRuntimeKtx = "2.9.3"
+lifecycleRuntimeCompose = "2.9.3"
+
+# --- Hilt ---
+hiltAndroid = "2.57.1"
+hiltNavigationCompose = "1.3.0"
+
+# --- Room (2.7.0+ → room-ktx слит в room-runtime, отдельно не нужен) ---
+roomRuntime = "2.8.0"
+
+# --- DataStore ---
+datastorePreferences = "1.1.7"
+
+# --- Kotlinx ---
+# Serialization 1.8.x совместима с Kotlin 2.2.x
+kotlinxSerializationJson = "1.8.1"
+kotlinxCoroutinesAndroid = "1.10.2"
+kotlinxCoroutinesCore = "1.10.2"
+
+# --- Moshi / Retrofit (общий стек проекта, для spy game не используется) ---
+moshi = "1.15.2"
+moshiKotlin = "1.15.2"
+moshiKotlinCodegen = "1.15.2"
+retrofit = "3.0.0"
+
+# --- Splash Screen ---
+coreSplashscreen = "1.0.1"
+
+# --- Прочее ---
+material = "1.13.0"
+jetbrainsKotlinJvm = "2.2.20"
+timber = "5.0.1"
+browser = "1.9.0"
+
+# --- Тестирование ---
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+# MockK 1.14.x — минимальная версия с полной поддержкой Kotlin 2.x
+mockk = "1.14.0"
+
+[libraries]
+# --- AndroidX Core ---
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+
+# --- Jetpack Compose (версии управляются BOM) ---
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+
+# --- Navigation ---
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+
+# --- Lifecycle / ViewModel ---
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+# ↓ ДОБАВЛЕНО: нужно для viewModel() в Composable-функциях
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+
+# --- Hilt ---
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+# --- Room (2.8.0: room-ktx слит в room-runtime) ---
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+
+# --- DataStore ---
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+
+# --- Kotlinx ---
+# ↓ ДОБАВЛЕНО: парсинг JSON из assets в ContentLoader
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+# ↓ ДОБАВЛЕНО: для unit-тестов (GameViewModelTest, ContentLoaderTest)
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesAndroid" }
+
+# --- Moshi / Retrofit (общий стек, не используется в spy game) ---
+moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
+moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+
+# --- Splash Screen ---
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+
+# --- Прочее ---
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
+
+# --- Тестирование ---
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+# ↓ ДОБАВЛЕНО: unit-тесты
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+# ↓ ДОБАВЛЕНО: для @Serializable в CategoryDto, ContentManifest
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+# KSP заменяет KAPT для Hilt + Room в Kotlin 2.x
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }

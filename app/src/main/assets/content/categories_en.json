@@ -1,0 +1,106 @@
+{
+  "language": "en",
+  "version": 1,
+  "categories": [
+    {
+      "id": "animals_en",
+      "name": "Animals",
+      "words": ["Cat", "Dog", "Wolf", "Bear", "Fox", "Rabbit", "Lion", "Tiger", "Elephant", "Penguin"]
+    },
+    {
+      "id": "fruits_en",
+      "name": "Fruits",
+      "words": ["Apple", "Pear", "Banana", "Orange", "Lemon", "Cherry", "Grape", "Peach", "Watermelon", "Plum"]
+    },
+    {
+      "id": "vegetables_en",
+      "name": "Vegetables",
+      "words": ["Carrot", "Potato", "Cucumber", "Tomato", "Onion", "Cabbage", "Pepper", "Eggplant", "Zucchini", "Beet"]
+    },
+    {
+      "id": "vehicles_en",
+      "name": "Transport",
+      "words": ["Car", "Bus", "Train", "Bicycle", "Airplane", "Ship", "Motorcycle", "Tram", "Truck", "Taxi"]
+    },
+    {
+      "id": "home_en",
+      "name": "Home",
+      "words": ["Table", "Chair", "Bed", "Sofa", "Lamp", "Door", "Window", "Wardrobe", "Carpet", "Mirror"]
+    },
+    {
+      "id": "kitchen_en",
+      "name": "Kitchen",
+      "words": ["Spoon", "Fork", "Knife", "Plate", "Cup", "Pot", "Pan", "Kettle", "Bowl", "Bread"]
+    },
+    {
+      "id": "clothes_en",
+      "name": "Clothes",
+      "words": ["T-shirt", "Shirt", "Pants", "Skirt", "Dress", "Jacket", "Hat", "Shoe", "Sock", "Glove"]
+    },
+    {
+      "id": "nature_en",
+      "name": "Nature",
+      "words": ["Birch", "Oak", "Rose", "Pine", "Mountain", "River", "Lake", "Grass", "Cloud", "Sun"]
+    },
+    {
+      "id": "weather_en",
+      "name": "Weather",
+      "words": ["Rain", "Snow", "Wind", "Fog", "Storm", "Rainbow", "Sunshine", "Ice", "Cloud", "Hail"]
+    },
+    {
+      "id": "sea_en",
+      "name": "Sea",
+      "words": ["Fish", "Crab", "Dolphin", "Shark", "Coral", "Wave", "Sand", "Beach", "Anchor", "Sail"]
+    },
+    {
+      "id": "forest_en",
+      "name": "Forest",
+      "words": ["Fir", "Stump", "Mushroom", "Berry", "Cone", "Squirrel", "Wild boar", "Moss", "Bush", "Deer"]
+    },
+    {
+      "id": "tools_en",
+      "name": "Tools",
+      "words": ["Hammer", "Screwdriver", "Saw", "Nail", "Wrench", "Axe", "Scissors", "Ruler", "Drill", "Brush"]
+    },
+    {
+      "id": "sports_en",
+      "name": "Sports",
+      "words": ["Football", "Basketball", "Tennis", "Hockey", "Swimming", "Skiing", "Boxing", "Bicycle", "Volleyball", "Running"]
+    },
+    {
+      "id": "music_en",
+      "name": "Music",
+      "words": ["Guitar", "Piano", "Drum", "Violin", "Flute", "Microphone", "Note", "Saxophone", "Harp", "Trumpet"]
+    },
+    {
+      "id": "space_en",
+      "name": "Space",
+      "words": ["Planet", "Star", "Moon", "Sun", "Rocket", "Satellite", "Comet", "Astronaut", "Telescope", "Meteor"]
+    },
+    {
+      "id": "school_en",
+      "name": "School",
+      "words": ["Book", "Notebook", "Pen", "Pencil", "Desk", "Board", "Backpack", "Eraser", "Globe", "Bell"]
+    },
+    {
+      "id": "city_en",
+      "name": "City",
+      "words": ["House", "Bridge", "Street", "Park", "Tower", "Lamp", "Square", "Bus", "Subway", "Monument"]
+    },
+    {
+      "id": "garden_en",
+      "name": "Garden",
+      "words": ["Flower", "Tree", "Apple", "Pear", "Leaf", "Watering can", "Bush", "Grass", "Bee", "Fence"]
+    },
+    {
+      "id": "toys_en",
+      "name": "Toys",
+      "words": ["Ball", "Blocks", "Doll", "Toy car", "Puzzle", "Spinning top", "Teddy bear", "Lego", "Kite", "Balloon"]
+    },
+    {
+      "id": "shapes_en",
+      "name": "Shapes",
+      "words": ["Circle", "Square", "Triangle", "Rectangle", "Oval", "Star", "Heart", "Diamond", "Spiral", "Semicircle"]
+    }
+  ]
+}
