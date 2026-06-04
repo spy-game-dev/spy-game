@@ -44,6 +44,12 @@ class GameViewModel @Inject constructor(
     /** Job таймера текущей открытой карточки. Отменяется при dismiss. */
     private var timerJob: Job? = null
 
+    /**
+     * Job загрузки сессии. Отменяет предыдущий запрос при повторном вызове,
+     * исключая гонку между параллельными loadSession — побеждает последний вызов.
+     */
+    private var loadSessionJob: Job? = null
+
     init {
         observeSettings()
     }
@@ -83,9 +89,10 @@ class GameViewModel @Inject constructor(
      * @param excludeCategoryId ID категории, которую нужно исключить (для Refresh).
      */
     private fun loadSession(settings: AppSettings, excludeCategoryId: String?) {
+        loadSessionJob?.cancel()
         cancelTimer()
 
-        viewModelScope.launch {
+        loadSessionJob = viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             runCatching {
@@ -99,8 +106,8 @@ class GameViewModel @Inject constructor(
                 )
                 val session = generateGameSessionUseCase(category, settings.playerCount)
 
-                _uiState.update {
-                    it.copy(
+                _uiState.update { current ->
+                    current.copy(
                         session = session,
                         cardStates = List(session.totalPlayers) { CardUiState.STACKED },
                         timerProgress = 1f,

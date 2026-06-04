@@ -10,7 +10,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,13 +26,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.internet.spygame.domain.model.GameCard
 import ru.internet.spygame.presentation.game.CardUiState
-import ru.internet.spygame.presentation.theme.SpyGameTheme
 import kotlin.math.abs
 
 /**
@@ -96,18 +93,28 @@ fun SpyCard(
     )
 
     // ─── 3D-флип (Animatable — нужны последовательные фазы) ──────────────────
-    val flipRotation = remember { Animatable(0f) }
+    //
+    // ВАЖНО: все анимационные remember привязаны к card.
+    //
+    // Без ключа Compose переиспользует те же экземпляры SpyCard при смене сессии,
+    // если ContentState не переходил через LOADING (оба _uiState.update батчатся
+    // до следующего кадра). В таком случае showBackFace остаётся true, и новое
+    // слово из следующей категории на долю секунды видно через обратную сторону.
+    //
+    // Привязка к card сбрасывает стейт синхронно во время рекомпозиции —
+    // до того как кадр будет нарисован — устраняя мельтешение полностью.
+    val flipRotation = remember(card) { Animatable(0f) }
     // Когда true — показываем CardBack (слово), иначе — CardFront (рубашку)
-    var showBackFace by remember { mutableStateOf(false) }
+    var showBackFace by remember(card) { mutableStateOf(false) }
 
     // ─── Анимация dismiss ────────────────────────────────────────────────────
-    val dismissOffsetX = remember { Animatable(0f) }
-    val dismissAlpha   = remember { Animatable(1f) }
+    val dismissOffsetX = remember(card) { Animatable(0f) }
+    val dismissAlpha   = remember(card) { Animatable(1f) }
 
     // ─── Живое смещение свайпа от пальца ─────────────────────────────────────
-    var swipeOffsetX by remember { mutableFloatStateOf(0f) }
+    var swipeOffsetX by remember(card) { mutableFloatStateOf(0f) }
     // +1 = вправо, -1 = влево; по умолчанию +1 (dismiss по таймеру или тапу)
-    var dismissDirection by remember { mutableIntStateOf(1) }
+    var dismissDirection by remember(card) { mutableIntStateOf(1) }
 
     // ─── Главный LaunchedEffect ───────────────────────────────────────────────
     LaunchedEffect(cardUiState) {
